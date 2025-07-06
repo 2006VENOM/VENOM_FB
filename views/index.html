@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session ID Collector</title>
+</head>
+<body>
+  <h1>WhatsApp Session ID Collector</h1>
+  <form id="numberForm">
+    <label for="phoneNumber">Enter WhatsApp Number:</label><br />
+    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="+1234567890" required />
+    <button type="submit">Get Session ID</button>
+  </form>
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById('numberForm');
+    const response = document.getElementById('response');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const number = document.getElementById('phoneNumber').value;
+
+      try {
+        const res = await fetch('/get-session-id', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phoneNumber: number })
+        });
+        const data = await res.json();
+        if (data.sessionId) {
+          response.textContent = 'Session ID: ' + data.sessionId;
+        } else {
+          response.textContent = 'Failed to get session ID.';
+        }} catch (err) {
+        response.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

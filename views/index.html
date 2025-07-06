@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WhatsApp Session ID Collector</title>
+</head>
+<body>
+  <h1>Enter your phone number</h1>
+  <form id="phoneForm">
+    <input type="text" id="phone" placeholder="e.g. 1234567890" required />
+    <button type="submit">Get Session ID</button>
+  </form>
+
+  <pre id="sessionResult"></pre>
+
+  <script>
+    const form = document.getElementById('phoneForm');
+    const sessionResult = document.getElementById('sessionResult');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();const phone = document.getElementById('phone').value;
+
+      const response = await fetch('/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        sessionResult.textContent = "Your session ID:\n" + data.sessionId;
+      } else {
+        sessionResult.textContent = "Failed to get session ID.";
+      }
+    });
+  </script>
+</body>
+</html>

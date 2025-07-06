@@ -1,54 +1,27 @@
 const express = require('express');
 const path = require('path');
-const { Client, LegacySessionAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'views')));
-
-let client;
+app.use(express.static('public')); // serve static files (CSS, images, JS)
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-app.post('/start', (req, res) => {
-  const phoneNumber = req.body.phone;
+// Dummy endpoint to simulate session ID generation
+app.post('/get-session', (req, res) => {
+  const { phoneNumber } = req.body;
+  if(!phoneNumber) return res.status(400).json({ error: 'Phone number required' });
 
-  if (client) {
-    client.destroy();
-  }
-
-  client = new Client({
-    authStrategy: new LegacySessionAuth(),puppeteer: { headless: true }
-  });
-
-  client.on('qr', qr => {
-    console.log('QR code:', qr);
-    qrcode.generate(qr, { small: true });
-  });
-
-  client.on('authenticated', (session) => {
-    console.log('Authenticated!');
-    // Send session data back to front-end or just console.log
-    res.json({ sessionId: JSON.stringify(session) });
-  });
-
-  client.on('ready', () => {
-    console.log('Client ready!');
-  });
-
-  client.on('auth_failure', () => {
-    console.log('Authentication failure, restart required.');
-  });
-
-  client.initialize();
+  // Simulate a session ID (in real, generate or get from WhatsApp lib)
+  const sessionId = `session_phoneNumber_{Date.now()}`;
+  
+  // Return the session ID
+  res.json({ sessionId });
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

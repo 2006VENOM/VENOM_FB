@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>WhatsApp Session ID Collector</title>
-</head>
-<body>
-  <h1>Enter your phone number</h1>
-  <form id="phoneForm">
-    <input type="text" id="phone" placeholder="e.g. 1234567890" required />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VENOM Session ID</title>
+<style>
+  body {
+    margin: 0;<input type="text" id="phoneNumber" placeholder="Enter phone number" required />
     <button type="submit">Get Session ID</button>
   </form>
-
-  <pre id="sessionResult"></pre>
+  <div id="result"></div>
 
   <script>
-    const form = document.getElementById('phoneForm');
-    const sessionResult = document.getElementById('sessionResult');
+    const form = document.getElementById('sessionForm');
+    const result = document.getElementById('result');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();const phone = document.getElementById('phone').value;
+    form.addEventListener('submit', async (e) => 
+      e.preventDefault();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      if(!phoneNumber) 
+        result.textContent = 'Please enter a phone number.';
+        return;
+      
 
-      const response = await fetch('/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone })
-      });
+      result.textContent = 'Generating session ID...';
 
-      if (response.ok) {
-        const data = await response.json();
-        sessionResult.textContent = "Your session ID:\n" + data.sessionId;
-      } else {
-        sessionResult.textContent = "Failed to get session ID.";
+      try 
+        const res = await fetch('/get-session', 
+          method: 'POST',
+          headers:  'Content-Type': 'application/json' ,
+          body: JSON.stringify( phoneNumber )
+        );
+        const data = await res.json();
+        if(res.ok) 
+          result.textContent = `Session ID:{data.sessionId}`;
+        } else {
+          result.textContent = data.error || 'Failed to get session ID.';
+        }
+      } catch (err) {
+        result.textContent = 'Error contacting server.';
       }
     });
   </script>

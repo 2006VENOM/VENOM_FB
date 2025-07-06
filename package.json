@@ -1,7 +1,7 @@
 {
   "name": "VENOM-FB",
   "version": "1.0.0",
-  "description": "WhatsApp bot to download Facebook videos using Apify API",
+  "description": "WhatsApp bot for Facebook video downloader",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,6 +9,6 @@
   "dependencies": {
     "axios": "^1.4.0",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.19.1"
+    "whatsapp-web.js": "^1.19.6"
   }
 }

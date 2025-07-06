@@ -1,14 +1,11 @@
 {
-  "name": "session-id-site",
-  "version": "1.0.0",
-  "description": "WhatsApp Session ID collector site",
+  "name": "venom-session-id-site",
+  "version": "1.0.0","description": "VENOM Session ID generator website",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "whatsapp-web.js": "^1.19.1",
-    "qrcode-terminal": "^0.12.0"
+    "express": "^4.18.2"
   }
 }

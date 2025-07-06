@@ -1,4 +1,4 @@
-```json
+json
 {
   "name": "VENOM-FB",
   "version": "1.0.0",
@@ -13,4 +13,3 @@
     "whatsapp-web.js": "^1.19.1"
   }
 }
-```
